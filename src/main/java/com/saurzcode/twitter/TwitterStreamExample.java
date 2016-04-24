@@ -18,7 +18,7 @@ public class TwitterStreamExample {
 	    BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10000);
 	    StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
 	    // add some track terms
-	    endpoint.trackTerms(Lists.newArrayList("twitterapi", "#AAPSweep"));
+	    endpoint.trackTerms(Lists.newArrayList("twitterapi", "#23NisanUlusalEgemenlikBayramı"));
 
 	    Authentication auth = new OAuth1(consumerKey, consumerSecret, token, secret);
 	    // Authentication auth = new BasicAuth(username, password);

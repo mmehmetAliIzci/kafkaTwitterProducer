@@ -34,8 +34,8 @@ public class TwitterKafkaProducer {
 		BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10000);
 		StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
 		// add some track terms
-		endpoint.trackTerms(Lists.newArrayList("twitterapi",
-				"#AAPSweep"));
+		endpoint.trackTerms(Lists.newArrayList(
+				"#LondonMarathon"));
 
 		Authentication auth = new OAuth1(consumerKey, consumerSecret, token,
 				secret);
@@ -49,16 +49,30 @@ public class TwitterKafkaProducer {
 		// Establish a connection
 		client.connect();
 
-		// Do whatever needs to be done with messages
-		for (int msgRead = 0; msgRead < 1000; msgRead++) {
+		int tweet_count=0;
+		while (!client.isDone()) {
+			tweet_count++;
 			KeyedMessage<String, String> message = null;
 			try {
+				System.out.println(tweet_count);
 				message = new KeyedMessage<String, String>(topic, queue.take());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			producer.send(message);
 		}
+
+/*		// Do whatever needs to be done with messages
+		for (int msgRead = 0; msgRead < 1000; msgRead++) {
+			KeyedMessage<String, String> message = null;
+			try {
+				System.out.println(msgRead);
+				message = new KeyedMessage<String, String>(topic, queue.take());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			producer.send(message);
+		}*/
 		producer.close();
 		client.stop();
 
@@ -66,7 +80,7 @@ public class TwitterKafkaProducer {
 
 	public static void main(String[] args) {
 		try {
-			TwitterKafkaProducer.run(args[0], args[1], args[2], args[3]);
+			TwitterKafkaProducer.run("URWNWzSixjyp9f89RgEAOc24Z", "caM94fmrYYBKAojceFkOhxhRKHozaEEBLqQqQZa6JLRQyJioWQ", "718724826295320576-cuaWPQadPs5U5oqNrQtP70Ft3F57YQr", "HBiszz2yQVg69Q8gc0cFF2eY45Cn1p6GCn40QHeSI4Rzj");
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
